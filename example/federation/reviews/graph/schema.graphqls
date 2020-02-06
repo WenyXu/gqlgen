@@ -1,0 +1,17 @@
+type Review {
+    body: String!
+    author: User! @provides(fields: "username")
+    product: Product!
+}
+
+extend type User @key(fields: "id") {
+    id: ID! @external
+    reviews: [Review!]! @goField(forceResolver:true)
+}
+
+extend type Product @key(fields: "upc") {
+    upc: String! @external
+    reviews: [Review] @goField(forceResolver:true)
+}
+
+directive @goField(forceResolver: Boolean, name: String) on INPUT_FIELD_DEFINITION | FIELD_DEFINITION
